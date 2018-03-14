@@ -26,6 +26,7 @@ type Configuration struct {
     Password string
     ServerHost string
     ServerPort string
+    ServerType string
     SSL bool
     Prefix string
     Channels []string
@@ -45,6 +46,7 @@ func main() {
 		Nickname: configuration.Nickname,
 		Username: configuration.Username,
 		CmdPrefix: configuration.Prefix,
+		ServerType: configuration.ServerType,
 		ImageHosts: configuration.ImageHosts,
 	}
 	auth := bot.AuthFunc(func(mask *irc.Prefix) (bot.Permissions, error) {
@@ -62,11 +64,11 @@ func main() {
 		}), nil
 	})
 	b := bot.New(conf, auth, make(MapStore))
-	b.LoadPlugin(&plugins.LoginX{Username: configuration.Username, Password: configuration.Password})
+	b.LoadPlugin(&plugins.Login{Username: configuration.Username, Password: configuration.Password})
 	b.LoadPlugin(&plugins.AutoJoin{Channels: configuration.Channels})
 	b.LoadPlugin(&plugins.OPCmd{})
 	b.LoadPlugin(&plugins.Misc{})
-	rs, _ := reddit.NewScript("Undernet IRCbot by sizeofcat", 3 * time.Second)
+	rs, _ := reddit.NewScript("IRCbot by sizeofcat", 3 * time.Second)
 	b.LoadPlugin(&plugins.RedditParser{Lurker: rs})
 	b.HandleIRC("irc.*", func(msg *irc.Message) (bool, error) {
 		switch strings.ToLower(msg.Command) {

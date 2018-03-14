@@ -18,6 +18,7 @@ import (
 type Config struct {
 	Nickname string
 	Username string
+	ServerType string
 	CmdPrefix string
 	RateLimitMessages int
 	RateLimitDuration time.Duration

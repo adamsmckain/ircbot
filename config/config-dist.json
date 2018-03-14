@@ -4,6 +4,7 @@
 	"Password": "",
 	"ServerHost": "irc.undernet.org",
 	"ServerPort": "6667",
+	"ServerType": "undernet",
 	"SSL": false,
 	"Channels": [
 		"#main"

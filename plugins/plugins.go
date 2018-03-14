@@ -31,7 +31,7 @@ type OPCmd struct {
 	bot *bot.Bot
 }
 
-type LoginX struct {
+type Login struct {
 	Username string
 	Password string
 	bot *bot.Bot
@@ -337,7 +337,7 @@ func (p *Misc) kick(msg *irc.Message) (bool, error) {
 		return false, nil
 	}
 	bannedUser := msg.Prefix.Name
-	if bannedUser == "X" {
+	if bannedUser == "X" || bannedUser == "Chanserv" {
 		parts := strings.Fields(msg.Trailing)
 		bannedUser = strings.Trim(parts[len(parts) - 1], "()")
 	}
@@ -385,26 +385,34 @@ func (p *OPCmd) kickban(source *irc.Prefix, target string, cmd string, args []st
 		return true, nil
 	}
 	whom := args[0]
-	p.bot.Message(bot.PrivMsg("X", fmt.Sprintf("ban %s %s", target, whom)))
+	if p.bot.Config.ServerType == "undernet" {
+		p.bot.Message(bot.PrivMsg("x@channels.undernet.org", fmt.Sprintf("ban %s %s", target, whom)))
+	} else {
+		p.bot.Message(bot.PrivMsg("Chanserv", fmt.Sprintf("ban %s %s", target, whom)))
+	}
 	return true, nil
 }
 
-func (p *LoginX) Load(b *bot.Bot) (*bot.PluginInfo, error) {
+func (p *Login) Load(b *bot.Bot) (*bot.PluginInfo, error) {
 	p.bot = b
 	b.Handle("irc.001", p.welcome)
 	return &bot.PluginInfo{
-		Name: "LoginX",
-		Description: "Authenticate to X.",
+		Name: "Login",
+		Description: "Authenticate to the IRC server.",
 	}, nil
 }
 
-func (p *LoginX) Unload() error {
+func (p *Login) Unload() error {
 	return nil
 }
 
-func (p *LoginX) welcome(name string, params []interface{}) (bool, error) {
-	if len(p.Username) > 0 && len(p.Password) > 0 {
-		p.bot.Message(bot.PrivMsg("x@channels.undernet.org", "login " + p.Username + " " + p.Password))
+func (p *Login) welcome(name string, params []interface{}) (bool, error) {
+	if len(p.Password) > 0 {
+		if p.bot.Config.ServerType == "undernet" {
+			p.bot.Message(bot.PrivMsg("x@channels.undernet.org", "login " + p.Username + " " + p.Password))
+		} else {
+			p.bot.Message(bot.PrivMsg("Nickserv", "identify " + p.Password))
+		}
 	}
 	return false, nil
 }
