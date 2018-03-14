@@ -1,7 +1,7 @@
 Undernet IRCbot
 ===============
 
-IRCbot is a simple Undernet IRC bot written in [go](https://en.wikipedia.org/wiki/Golang).
+IRCbot is a simple Undernet IRC bot written in [go](https://en.wikipedia.org/wiki/Golang). Beware that the bot indexes some NSFW (porn) subreddits and displays the resulting images via some bot commands.
 
 Building and running
 ====================
