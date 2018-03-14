@@ -1,0 +1,25 @@
+{
+	"Nickname": "IRCbot",
+	"Username": "",
+	"Password": "",
+	"ServerHost": "irc.undernet.org",
+	"ServerPort": "6667",
+	"SSL": false,
+	"Channels": [
+		"#main"
+	],
+	"Users": {
+		"youruser.users.undernet.org": ["all"],
+		"anotheruser.users.undernet.org": ["annoy", "invite"],
+		"onemoreuser.users.undernet.org": ["annoy", "invite", "opcmds"],
+	},
+	"Prefix": ".",
+	"ImageHosts": [
+		"imgur.com",
+		"gfycat.com",
+		"giphy.com",
+		"i.redditmedia.com",
+		"i.redd.it",
+		"media.tumblr.com"
+	]
+}
